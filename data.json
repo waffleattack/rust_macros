@@ -1,0 +1,1 @@
+{"macro1":{"actions":[{"MouseMove":[10,10]},{"Sleep":10},{"Exit":[]},{"MouseKey":"x"}],"name":"Test Macro","repeat":false},"Q":{"actions":[{"MouseMove":[10,10]},{"Sleep":10},{"Exit":[]},{"MouseKey":"x"}],"name":"Test Macro","repeat":false}}
