@@ -1,10 +1,12 @@
-use std::{fs, process};
+use std::{fs, process, thread};
 use std::collections::HashMap;
+use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 
 use device_query::{DeviceQuery, DeviceState};
 use device_query::keymap::Keycode;
 
+use crate::mappings::MAPPINGS;
 use crate::types::{Action, Macro};
 
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -31,8 +33,18 @@ impl Manager {
         let data = serde_json::to_string(&self.macros).unwrap();
         fs::write(path, data).expect("Unable to write file");
     }
-    pub fn new(sender: Sender<Macro>, receiver: Receiver<bool>, macros: HashMap<String, Macro>) -> Self {
-        Manager { sender, receiver, macros, mode: Mode::None, recorded_macro: None }
+    pub fn new(macros: HashMap<String, Macro>) -> Self {
+        let (tx, rx) = mpsc::channel();
+        let (tx2, rx2) = mpsc::channel();
+        thread::spawn(move || {
+            loop {
+                let task: Macro = rx.recv().unwrap();
+
+                task.execute();
+                tx2.send(true).unwrap()
+            }
+        });
+        Manager { sender: tx, receiver: rx2, macros, mode: Mode::None, recorded_macro: None }
     }
     pub fn process_key(&mut self, key: Keycode) {
         let mut new_mode = match key {
@@ -45,39 +57,15 @@ impl Manager {
         if new_mode != self.mode {
             println!("New Mode {:#?}", new_mode)
         }
-        let key_str = &*format!("{}", key);
-        println!("Key : {}, Mode : {:#?}", key_str, self.mode);
-        if self.mode == Mode::Macro {
-            if self.macros.contains_key(key_str) {
-                println!("executing macro");
-                new_mode = Mode::Exec;
-                self.sender.send(self.macros.get(key_str).unwrap().clone()).unwrap();
-            } else if key_str.len() == 1 {
-                new_mode = Mode::Record;
-                self.recorded_macro = Some(Macro::new("PlaceHolderName".to_owned(), false, Vec::new(), key_str.to_owned()));
-                println!("Recording new Macro with key {}", key_str)
-            }
-        }
-        if self.mode == Mode::Exec {
-            println!("Checking if done");
-        }
-        if self.mode == Mode::Record {
-            if new_mode != Mode::Record {
-                let new_macro = self.recorded_macro.take().unwrap();
-                self.macros.insert(new_macro.clone().key, new_macro);
-                self.flush();
-            } else {
-                let (x, y) = DeviceState::new().get_mouse().coords;
-                let new_action = match (key, key_str.len() == 1) {
-                    (Keycode::F4, _) => Action::MouseMove(x, y),
-                    (Keycode::F5, _) => Action::Click(),
+        let key_str = &*key.to_string();
 
-                    (_x, true) => Action::Key(key_str.chars().next().expect("string is empty")),
-                    (_, _) => todo!("uhhh idk")
-                };
-                self.recorded_macro.as_mut().unwrap().actions.push(new_action);
-            }
-        }
+        new_mode = match self.mode {
+            Mode::Macro => self.mode_macro(key_str),
+            Mode::Record => self.mode_record(key, new_mode, key_str),
+            _ => new_mode
+        };
+        println!("Key : {}, Mode : {:#?}", key_str, self.mode);
+
 
         self.mode = new_mode;
         match self.receiver.try_recv() {
@@ -88,5 +76,38 @@ impl Manager {
                 self.process_key(key)
             }
         }
+    }
+
+    fn mode_record(&mut self, key: Keycode, new_mode: Mode, key_str: &str) -> Mode {
+        if new_mode != Mode::Record {
+            let new_macro = self.recorded_macro.take().unwrap();
+            self.macros.insert(new_macro.clone().key, new_macro);
+            self.flush();
+        } else {
+            let (x, y) = DeviceState::new().get_mouse().coords;
+            let new_action: Action = match (key, key_str.len() == 1) {
+                (Keycode::F4, _) => Action::MouseMove(x, y),
+                (Keycode::F5, _) => Action::Click(),
+                (_x, true) => Action::KeyC(key_str.chars().next().expect("string is empty")),
+                (_, _) => MAPPINGS.get(&key).unwrap_or(&Action::Sleep(10)).clone()
+            };
+            self.recorded_macro.as_mut().unwrap().actions.push(new_action);
+        }
+        new_mode
+    }
+
+    fn mode_macro(&mut self, key_str: &str) -> Mode {
+        let mut new_mode: Mode = Mode::Macro;
+
+        if self.macros.contains_key(key_str) {
+            println!("executing macro");
+            new_mode = Mode::Exec;
+            self.sender.send(self.macros.get(key_str).unwrap().clone()).unwrap();
+        } else if key_str.len() == 1 {
+            new_mode = Mode::Record;
+            self.recorded_macro = Some(Macro::new("PlaceHolderName".to_owned(), false, Vec::new(), key_str.to_owned()));
+            println!("Recording new Macro with key {}", key_str)
+        };
+        new_mode
     }
 }

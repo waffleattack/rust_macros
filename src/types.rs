@@ -10,7 +10,7 @@ pub enum Action {
     MouseMoveR(i32, i32),
     Sleep(i32),
     Click(),
-    Key(char),
+    KeyC(char),
 }
 
 impl Action {
@@ -21,8 +21,7 @@ impl Action {
             Self::MouseMoveR(x, y) => enigo.mouse_move_relative(*x, *y),
             Self::Sleep(x) => thread::sleep(Duration::from_millis(*x as u64)),
             Self::Click() => enigo.mouse_click(MouseButton::Left),
-            Self::Key(k) => enigo.key_click(Key::Layout(*k)),
-            _ => todo!("unimplemented action")
+            Self::KeyC(k) => enigo.key_click(Key::Layout(*k)),
         }
     }
 }

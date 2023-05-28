@@ -1,1 +1,95 @@
-{"macro1":{"actions":[{"MouseMove":[10,10]},{"Sleep":10},{"Exit":[]},{"MouseKey":"x"}],"name":"Test Macro","repeat":false},"Q":{"actions":[{"MouseMove":[10,10]},{"Sleep":10},{"Exit":[]},{"MouseKey":"x"}],"name":"Test Macro","repeat":false}}
+{
+  "H": {
+    "actions": [
+      {
+        "KeyC": "O"
+      },
+      {
+        "KeyC": "W"
+      },
+      {
+        "KeyC": "Y"
+      },
+      {
+        "KeyC": "A"
+      },
+      {
+        "KeyC": "D"
+      },
+      {
+        "KeyC": "O"
+      },
+      {
+        "KeyC": "I"
+      },
+      {
+        "KeyC": "N"
+      },
+      {
+        "KeyC": "G"
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "H"
+  },
+  "Y": {
+    "actions": [
+      {
+        "KeyC": "H"
+      },
+      {
+        "KeyC": "O"
+      },
+      {
+        "KeyC": "W"
+      },
+      {
+        "KeyC": "Y"
+      },
+      {
+        "KeyC": "A"
+      },
+      {
+        "KeyC": "D"
+      },
+      {
+        "KeyC": "O"
+      },
+      {
+        "KeyC": "I"
+      },
+      {
+        "KeyC": "N"
+      },
+      {
+        "KeyC": "G"
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "Y"
+  },
+  "Q": {
+    "actions": [
+      {
+        "MouseMove": [
+          10,
+          10
+        ]
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "Click": []
+      },
+      {
+        "KeyC": "x"
+      }
+    ],
+    "name": "Test Macro",
+    "repeat": false,
+    "key": "Q"
+  }
+}
