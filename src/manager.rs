@@ -24,6 +24,7 @@ pub struct Manager {
     macros: HashMap<String, Macro>,
     mode: Mode,
     recorded_macro: Option<Macro>,
+    last_pos: (i32, i32),
 }
 
 //    let val = map.get(&"macro1".to_owned()).unwrap();
@@ -39,16 +40,15 @@ impl Manager {
         thread::spawn(move || {
             loop {
                 let task: Macro = rx.recv().unwrap();
-
                 task.execute();
                 tx2.send(true).unwrap()
             }
         });
-        Manager { sender: tx, receiver: rx2, macros, mode: Mode::None, recorded_macro: None }
+        Manager { sender: tx, receiver: rx2, macros, mode: Mode::None, recorded_macro: None, last_pos: (0, 0) }
     }
     pub fn process_key(&mut self, key: Keycode) {
         let mut new_mode = match key {
-            Keycode::Escape => process::exit(0),
+            Keycode::F11 => process::exit(0),
             Keycode::F1 => Mode::Macro,
             Keycode::F2 => Mode::Options,
             Keycode::F3 => Mode::None,
@@ -64,14 +64,13 @@ impl Manager {
             Mode::Record => self.mode_record(key, new_mode, key_str),
             _ => new_mode
         };
-        println!("Key : {}, Mode : {:#?}", key_str, self.mode);
+        //println!("Key : {}, Mode : {:#?}", key_str, self.mode);
 
 
         self.mode = new_mode;
         match self.receiver.try_recv() {
-            Err(_) => println!("FAiled"),
+            Err(_) => (),
             Ok(_) => {
-                println!("Recieved Done");
                 self.mode = Mode::Macro;
                 self.process_key(key)
             }
@@ -86,8 +85,16 @@ impl Manager {
         } else {
             let (x, y) = DeviceState::new().get_mouse().coords;
             let new_action: Action = match (key, key_str.len() == 1) {
-                (Keycode::F4, _) => Action::MouseMove(x, y),
-                (Keycode::F5, _) => Action::Click(),
+                (Keycode::F4, _) => Action::Click(),
+                (Keycode::F5, _) => Action::MouseMove(x, y),
+                (Keycode::F6, _) => {
+                    let (x_l, y_l) = self.last_pos;
+                    self.last_pos = (x, y);
+                    Action::MouseMoveR(x - x_l, y - y_l)
+                }
+                (Keycode::F7, _) => Action::MDown(),
+                (Keycode::F8, _) => Action::MUp(),
+
                 (_x, true) => Action::KeyC(key_str.chars().next().expect("string is empty")),
                 (_, _) => MAPPINGS.get(&key).unwrap_or(&Action::Sleep(10)).clone()
             };
@@ -100,13 +107,15 @@ impl Manager {
         let mut new_mode: Mode = Mode::Macro;
 
         if self.macros.contains_key(key_str) {
-            println!("executing macro");
+            let run_macro = self.macros.get(key_str).unwrap().clone();
+            println!("Executing macro {}", run_macro.name);
             new_mode = Mode::Exec;
-            self.sender.send(self.macros.get(key_str).unwrap().clone()).unwrap();
+            self.sender.send(run_macro).unwrap();
         } else if key_str.len() == 1 {
             new_mode = Mode::Record;
             self.recorded_macro = Some(Macro::new("PlaceHolderName".to_owned(), false, Vec::new(), key_str.to_owned()));
-            println!("Recording new Macro with key {}", key_str)
+            println!("Recording new Macro with key {}", key_str);
+            self.last_pos = DeviceState::new().get_mouse().coords;
         };
         new_mode
     }
