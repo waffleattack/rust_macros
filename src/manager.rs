@@ -59,20 +59,23 @@ impl Manager {
             Keycode::F3 => Mode::None,
             _ => self.mode
         };
+
+        let key_str = &*key.to_string();
+        (new_mode, current_action) = match self.mode {
+            Mode::Macro => self.mode_macro(key_str, new_mode),
+            Mode::Record => self.mode_record(key, new_mode, key_str),
+            Mode::Exec => (new_mode, None),
+            Mode::None => (new_mode, Some(String::from(""))),
+            _ => (new_mode, None)
+        };
         if new_mode != self.mode {
             println!("New Mode {:#?}", new_mode);
         }
-        let key_str = &*key.to_string();
-        (new_mode, current_action) = match self.mode {
-            Mode::Macro => self.mode_macro(key_str),
-            Mode::Record => self.mode_record(key, new_mode, key_str),
-            Mode::Exec => (new_mode, None),
-            _ => (new_mode, None)
-        };
         //println!("Key : {}, Mode : {:#?}", key_str, self.mode);
-        let display = DisplayInfo::from(format!("{:#?}", new_mode), current_action);
-        MY_CHANNEL.1.lock().unwrap().send(display).expect("");
         self.mode = new_mode;
+
+        let display = DisplayInfo::from(format!("{:#?}", self.mode), current_action);
+        MY_CHANNEL.1.lock().unwrap().send(display).expect("");
     }
 
     fn mode_record(&mut self, key: Keycode, new_mode: Mode, key_str: &str) -> (Mode, Option<String>) {
@@ -84,7 +87,10 @@ impl Manager {
             self.flush();
             return (new_mode, Some(String::from("None")));
         } else if key == Keycode::Backspace {
-            m.actions.pop();
+            if let None = m.actions.pop() {
+                self.recorded_macro.take();
+                return (Mode::None, Some(String::from("Canceled Recording")));
+            }
         } else {
             let (x, y) = DeviceState::new().get_mouse().coords;
             let new_action: Action = match (key, key_str.len() == 1) {
@@ -106,8 +112,8 @@ impl Manager {
         return (new_mode, Some(format!("Key: {} Len: {} Last: {:?}", m.key, m.actions.len(), m.actions.last().unwrap_or(&Action::None()))));
     }
 
-    fn mode_macro(&mut self, key_str: &str) -> (Mode, Option<String>) {
-        let mut new_mode: Mode = Mode::Macro;
+    fn mode_macro(&mut self, key_str: &str, mode: Mode) -> (Mode, Option<String>) {
+        let mut new_mode: Mode = mode;
 
         if self.macros.contains_key(key_str) {
             let run_macro = self.macros.get(key_str).unwrap().clone();
