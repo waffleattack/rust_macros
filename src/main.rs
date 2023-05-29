@@ -1,5 +1,5 @@
+use std::{fs, thread};
 use std::collections::{HashMap, VecDeque};
-use std::fs;
 use std::sync::{Arc, Mutex};
 
 use device_query::{DeviceEvents, DeviceState, keymap::Keycode};
@@ -10,6 +10,7 @@ use crate::types::*;
 mod types;
 mod manager;
 mod mappings;
+mod overlay;
 
 fn main() {
     let buffer_head: Arc<Mutex<VecDeque<Keycode>>> = Default::default();
@@ -25,9 +26,12 @@ fn main() {
     let _guard = device_state.on_key_down(move |key| {
         buffer_in.lock().unwrap().push_back(*key);
     });
-    loop {
-        if !buffer_out.lock().unwrap().is_empty() {
-            manager.process_key(buffer_out.lock().unwrap().pop_front().unwrap())
+    thread::spawn(move || {
+        loop {
+            if !buffer_out.lock().unwrap().is_empty() {
+                manager.process_key(buffer_out.lock().unwrap().pop_front().unwrap())
+            }
         }
-    }
+    });
+    overlay::init_screen()
 }

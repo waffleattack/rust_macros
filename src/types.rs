@@ -4,6 +4,20 @@ use std::time::Duration;
 use enigo::{Enigo, Key, KeyboardControllable, MouseButton, MouseControllable};
 use serde::{Deserialize, Serialize};
 
+pub struct DisplayInfo {
+    pub(crate) mode: String,
+    pub(crate) current_action: Option<String>,
+}
+
+impl DisplayInfo {
+    pub fn from(mode: String, current_action: Option<String>) -> Self {
+        DisplayInfo {
+            mode,
+            current_action,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Action {
     MouseMove(i32, i32),
@@ -13,6 +27,7 @@ pub enum Action {
     KeyC(char),
     MDown(),
     MUp(),
+    None(),
 }
 
 impl Action {
@@ -25,7 +40,8 @@ impl Action {
             Self::Click() => enigo.mouse_click(MouseButton::Left),
             Self::KeyC(k) => enigo.key_click(Key::Layout(*k)),
             Self::MDown() => enigo.mouse_down(MouseButton::Left),
-            Self::MUp() => enigo.mouse_up(MouseButton::Left)
+            Self::MUp() => enigo.mouse_up(MouseButton::Left),
+            Self::None() => panic!("how...")
         }
     }
 }
@@ -43,7 +59,7 @@ impl Macro {
         Macro { actions, name, repeat, key }
     }
     pub fn execute(&self) {
-        let delay = Duration::from_millis(100);
+        let delay = Duration::from_millis(50);
         for task in self.actions.iter() {
             task.run();
             thread::sleep(delay);

@@ -7,9 +7,10 @@ use device_query::{DeviceQuery, DeviceState};
 use device_query::keymap::Keycode;
 
 use crate::mappings::MAPPINGS;
-use crate::types::{Action, Macro};
+use crate::overlay::MY_CHANNEL;
+use crate::types::*;
 
-#[derive(Debug, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Copy, Clone, )]
 enum Mode {
     Macro,
     Options,
@@ -47,6 +48,10 @@ impl Manager {
         Manager { sender: tx, receiver: rx2, macros, mode: Mode::None, recorded_macro: None, last_pos: (0, 0) }
     }
     pub fn process_key(&mut self, key: Keycode) {
+        let current_action: Option<String>;
+        if self.receiver.try_recv().is_ok() {
+            self.mode = Mode::Macro;
+        }
         let mut new_mode = match key {
             Keycode::F11 => process::exit(0),
             Keycode::F1 => Mode::Macro,
@@ -55,33 +60,31 @@ impl Manager {
             _ => self.mode
         };
         if new_mode != self.mode {
-            println!("New Mode {:#?}", new_mode)
+            println!("New Mode {:#?}", new_mode);
         }
         let key_str = &*key.to_string();
-
-        new_mode = match self.mode {
+        (new_mode, current_action) = match self.mode {
             Mode::Macro => self.mode_macro(key_str),
             Mode::Record => self.mode_record(key, new_mode, key_str),
-            _ => new_mode
+            Mode::Exec => (new_mode, None),
+            _ => (new_mode, None)
         };
         //println!("Key : {}, Mode : {:#?}", key_str, self.mode);
-
-
+        let display = DisplayInfo::from(format!("{:#?}", new_mode), current_action);
+        MY_CHANNEL.1.lock().unwrap().send(display).expect("");
         self.mode = new_mode;
-        match self.receiver.try_recv() {
-            Err(_) => (),
-            Ok(_) => {
-                self.mode = Mode::Macro;
-                self.process_key(key)
-            }
-        }
     }
 
-    fn mode_record(&mut self, key: Keycode, new_mode: Mode, key_str: &str) -> Mode {
+    fn mode_record(&mut self, key: Keycode, new_mode: Mode, key_str: &str) -> (Mode, Option<String>) {
+        let m = self.recorded_macro.as_mut().unwrap();
+
         if new_mode != Mode::Record {
             let new_macro = self.recorded_macro.take().unwrap();
             self.macros.insert(new_macro.clone().key, new_macro);
             self.flush();
+            return (new_mode, Some(String::from("None")));
+        } else if key == Keycode::Backspace {
+            m.actions.pop();
         } else {
             let (x, y) = DeviceState::new().get_mouse().coords;
             let new_action: Action = match (key, key_str.len() == 1) {
@@ -98,25 +101,26 @@ impl Manager {
                 (_x, true) => Action::KeyC(key_str.chars().next().expect("string is empty")),
                 (_, _) => MAPPINGS.get(&key).unwrap_or(&Action::Sleep(10)).clone()
             };
-            self.recorded_macro.as_mut().unwrap().actions.push(new_action);
+            m.actions.push(new_action.clone());
         }
-        new_mode
+        return (new_mode, Some(format!("Key: {} Len: {} Last: {:?}", m.key, m.actions.len(), m.actions.last().unwrap_or(&Action::None()))));
     }
 
-    fn mode_macro(&mut self, key_str: &str) -> Mode {
+    fn mode_macro(&mut self, key_str: &str) -> (Mode, Option<String>) {
         let mut new_mode: Mode = Mode::Macro;
 
         if self.macros.contains_key(key_str) {
             let run_macro = self.macros.get(key_str).unwrap().clone();
-            println!("Executing macro {}", run_macro.name);
             new_mode = Mode::Exec;
-            self.sender.send(run_macro).unwrap();
+            self.sender.send(run_macro.clone()).unwrap();
+            return (new_mode, Some(format!("Running: {}", run_macro.name)));
         } else if key_str.len() == 1 {
             new_mode = Mode::Record;
             self.recorded_macro = Some(Macro::new("PlaceHolderName".to_owned(), false, Vec::new(), key_str.to_owned()));
             println!("Recording new Macro with key {}", key_str);
             self.last_pos = DeviceState::new().get_mouse().coords;
+            return (new_mode, Some(format!("Key: {} Len {} Last: None", key_str, 0)));
         };
-        new_mode
+        return (new_mode, None);
     }
 }
