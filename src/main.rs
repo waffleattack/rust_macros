@@ -4,14 +4,12 @@ use std::sync::{Arc, Mutex};
 
 use device_query::{DeviceEvents, DeviceState, keymap::Keycode};
 
-use types::*;
-
 use crate::manager::Manager;
+use crate::types::*;
 
 mod types;
 mod manager;
 mod mappings;
-
 
 fn main() {
     let buffer_head: Arc<Mutex<VecDeque<Keycode>>> = Default::default();
@@ -32,13 +30,4 @@ fn main() {
             manager.process_key(buffer_out.lock().unwrap().pop_front().unwrap())
         }
     }
-
-
-    /*let q = SegQueue::new();
-    v1.iter().for_each(|x| q.push(x));
-    for x in q {
-
-    }
-    println!("{:?}",q)
-    */
 }

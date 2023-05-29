@@ -1,4 +1,4 @@
-use std::{fmt, thread, time};
+use std::{fmt, thread};
 use std::time::Duration;
 
 use enigo::{Enigo, Key, KeyboardControllable, MouseButton, MouseControllable};
@@ -43,7 +43,7 @@ impl Macro {
         Macro { actions, name, repeat, key }
     }
     pub fn execute(&self) {
-        let delay = from_millis(100);
+        let delay = Duration::from_millis(100);
         for task in self.actions.iter() {
             task.run();
             thread::sleep(delay);
