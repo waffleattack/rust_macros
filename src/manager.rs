@@ -5,6 +5,8 @@ use std::sync::mpsc::{Receiver, Sender};
 
 use device_query::{DeviceQuery, DeviceState};
 use device_query::keymap::Keycode;
+use enigo::{Enigo, Key};
+use enigo::KeyboardControllable;
 
 use crate::mappings::MAPPINGS;
 use crate::overlay::MY_CHANNEL;

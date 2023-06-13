@@ -6,8 +6,6 @@
 use std::sync::*;
 use std::sync::mpsc::*;
 
-use lazy_static::lazy_static;
-
 use bevy::{
     diagnostic::FrameTimeDiagnosticsPlugin,
     prelude::*,
@@ -15,6 +13,8 @@ use bevy::{
 };
 #[cfg(target_os = "macos")]
 use bevy::window::CompositeAlphaMode;
+use lazy_static::lazy_static;
+
 use types::DisplayInfo;
 
 use crate::types;
@@ -44,14 +44,14 @@ pub fn init_screen() {
                 decorations: true,
                 window_level: WindowLevel::AlwaysOnTop,
                 resizable: true,
+                focused: false,
                 resolution: WindowResolution::new(500.0, 50.0),
                 #[cfg(target_os = "macos")]
                 composite_alpha_mode: CompositeAlphaMode::PostMultiplied,
                 ..default()
             }),
             ..default()
-        }))
-        .run();
+        })).run();
 }
 
 // A unit struct to help identify the FPS UI component, since there may be many Text components

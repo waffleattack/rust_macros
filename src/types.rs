@@ -61,6 +61,7 @@ impl Macro {
     pub fn execute(&self) {
         let delay = Duration::from_millis(75);
         for task in self.actions.iter() {
+            println!("running {:#?}", task);
             task.run();
             thread::sleep(delay);
         }
