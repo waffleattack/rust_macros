@@ -1,0 +1,494 @@
+{
+  "F": {
+    "actions": [
+      {
+        "KeyC": "9"
+      },
+      {
+        "KeyC": "0"
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "KeyC": "8"
+      },
+      {
+        "KeyC": "8"
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "KeyC": "S"
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "F"
+  },
+  "T": {
+    "actions": [
+      {
+        "MDown": []
+      },
+      {
+        "MouseMoveR": [
+          51,
+          -92
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -87
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -53,
+          89
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          87
+        ]
+      },
+      {
+        "MUp": []
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "T"
+  },
+  "E": {
+    "actions": [
+      {
+        "MDown": []
+      },
+      {
+        "MouseMoveR": [
+          102,
+          2
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -89
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -51,
+          87
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -51,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          102,
+          3
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -52,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -52,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -49,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          101,
+          1
+        ]
+      },
+      {
+        "MUp": []
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "E"
+  },
+  "Q": {
+    "actions": [
+      {
+        "KeyC": "U"
+      },
+      {
+        "KeyC": "I"
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "KeyC": "A"
+      },
+      {
+        "KeyC": "A"
+      },
+      {
+        "KeyC": "A"
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "Q"
+  },
+  "L": {
+    "actions": [
+      {
+        "KeyC": "O"
+      },
+      {
+        "KeyC": "V"
+      },
+      {
+        "KeyC": "E"
+      },
+      {
+        "KeyC": " "
+      },
+      {
+        "KeyC": "T"
+      },
+      {
+        "KeyC": "H"
+      },
+      {
+        "KeyC": "I"
+      },
+      {
+        "KeyC": "S"
+      },
+      {
+        "KeyC": " "
+      },
+      {
+        "KeyC": "S"
+      },
+      {
+        "KeyC": "O"
+      },
+      {
+        "KeyC": " "
+      },
+      {
+        "KeyC": "M"
+      },
+      {
+        "KeyC": "U"
+      },
+      {
+        "KeyC": "C"
+      },
+      {
+        "KeyC": "H"
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "Sleep": 10
+      },
+      {
+        "Sleep": 10
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "L"
+  },
+  "A": {
+    "actions": [
+      {
+        "MDown": []
+      },
+      {
+        "MouseMoveR": [
+          102,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -54,
+          -88
+        ]
+      },
+      {
+        "MUp": []
+      }
+    ],
+    "name": "Create Artifact",
+    "repeat": false,
+    "key": "A"
+  }
+}
