@@ -1,5 +1,5 @@
-use std::{fmt, thread};
 use std::time::Duration;
+use std::{fmt, thread};
 
 use enigo::{Enigo, Key, KeyboardControllable, MouseButton, MouseControllable};
 use serde::{Deserialize, Serialize};
@@ -41,7 +41,7 @@ impl Action {
             Self::KeyC(k) => enigo.key_click(Key::Layout(*k)),
             Self::MDown() => enigo.mouse_down(MouseButton::Left),
             Self::MUp() => enigo.mouse_up(MouseButton::Left),
-            Self::None() => panic!("how...")
+            Self::None() => panic!("how..."),
         }
     }
 }
@@ -56,7 +56,12 @@ pub struct Macro {
 
 impl Macro {
     pub fn new(name: String, repeat: bool, actions: Vec<Action>, key: String) -> Self {
-        Macro { actions, name, repeat, key }
+        Macro {
+            actions,
+            name,
+            repeat,
+            key,
+        }
     }
     pub fn execute(&self) {
         let delay = Duration::from_millis(75);
@@ -70,6 +75,12 @@ impl Macro {
 
 impl fmt::Display for Macro {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Name: {}, Repeating {}, Length {}", self.name, self.repeat, self.actions.len())
+        write!(
+            f,
+            "Name: {}, Repeating {}, Length {}",
+            self.name,
+            self.repeat,
+            self.actions.len()
+        )
     }
 }

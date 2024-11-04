@@ -3,16 +3,16 @@
 //! This feature works as expected depending on the platform. Please check the
 //! [documentation](https://docs.rs/bevy/latest/bevy/prelude/struct.WindowDescriptor.html#structfield.transparent)
 //! for more details.
-use std::sync::*;
 use std::sync::mpsc::*;
+use std::sync::*;
 
+#[cfg(target_os = "macos")]
+use bevy::window::CompositeAlphaMode;
 use bevy::{
     diagnostic::FrameTimeDiagnosticsPlugin,
     prelude::*,
     window::{Window, WindowLevel, WindowPlugin, WindowResolution},
 };
-#[cfg(target_os = "macos")]
-use bevy::window::CompositeAlphaMode;
 use lazy_static::lazy_static;
 
 use types::DisplayInfo;
@@ -20,13 +20,11 @@ use types::DisplayInfo;
 use crate::types;
 
 lazy_static! {
-
     pub static ref MY_CHANNEL: (Mutex<Receiver<DisplayInfo>>, Mutex<Sender<DisplayInfo>>) = {
         let (rx, tx) = channel();
-        (Mutex::new(tx),Mutex::new(rx))
+        (Mutex::new(tx), Mutex::new(rx))
     };
 }
-
 
 pub fn init_screen() {
     App::new()
@@ -51,7 +49,8 @@ pub fn init_screen() {
                 ..default()
             }),
             ..default()
-        })).run();
+        }))
+        .run();
 }
 
 // A unit struct to help identify the FPS UI component, since there may be many Text components

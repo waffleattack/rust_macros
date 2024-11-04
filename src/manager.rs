@@ -1,18 +1,18 @@
-use std::{fs, process, thread};
 use std::collections::HashMap;
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
+use std::{fs, process, thread};
 
-use device_query::{DeviceQuery, DeviceState};
 use device_query::keymap::Keycode;
-use enigo::{Enigo, Key};
+use device_query::{DeviceQuery, DeviceState};
 use enigo::KeyboardControllable;
+use enigo::{Enigo, Key};
 
 use crate::mappings::MAPPINGS;
 use crate::overlay::MY_CHANNEL;
 use crate::types::*;
 
-#[derive(Debug, PartialEq, Copy, Clone, )]
+#[derive(Debug, PartialEq, Copy, Clone)]
 enum Mode {
     Macro,
     Options,
@@ -24,6 +24,7 @@ enum Mode {
 pub struct Manager {
     sender: Sender<Macro>,
     receiver: Receiver<bool>,
+    stop: Sender<bool>,
     macros: HashMap<String, Macro>,
     mode: Mode,
     recorded_macro: Option<Macro>,
@@ -40,14 +41,30 @@ impl Manager {
     pub fn new(macros: HashMap<String, Macro>) -> Self {
         let (tx, rx) = mpsc::channel();
         let (tx2, rx2) = mpsc::channel();
-        thread::spawn(move || {
+        let (tx3, rx3) = mpsc::channel();
+        thread::spawn(move || loop {
+            let task: Macro = rx.recv().unwrap();
+            let _ = rx3.try_recv().is_ok();
             loop {
-                let task: Macro = rx.recv().unwrap();
                 task.execute();
-                tx2.send(true).unwrap()
+                if !task.repeat {
+                    break;
+                }
+                if rx3.try_recv().is_ok() {
+                    break;
+                }
             }
+            tx2.send(true).unwrap()
         });
-        Manager { sender: tx, receiver: rx2, macros, mode: Mode::None, recorded_macro: None, last_pos: (0, 0) }
+        Manager {
+            sender: tx,
+            receiver: rx2,
+            stop: tx3,
+            macros,
+            mode: Mode::None,
+            recorded_macro: None,
+            last_pos: (0, 0),
+        }
     }
     pub fn process_key(&mut self, key: Keycode) {
         let current_action: Option<String>;
@@ -59,7 +76,13 @@ impl Manager {
             Keycode::F1 => Mode::Macro,
             Keycode::F2 => Mode::Options,
             Keycode::F3 => Mode::None,
-            _ => self.mode
+            Keycode::F9 => {
+                self.stop
+                    .send(true)
+                    .expect("If reciever closes, we should die anyways");
+                self.mode
+            }
+            _ => self.mode,
         };
 
         let key_str = &*key.to_string();
@@ -68,7 +91,7 @@ impl Manager {
             Mode::Record => self.mode_record(key, new_mode, key_str),
             Mode::Exec => (new_mode, None),
             Mode::None => (new_mode, Some(String::from(""))),
-            _ => (new_mode, None)
+            _ => (new_mode, None),
         };
         if new_mode != self.mode {
             println!("New Mode {:#?}", new_mode);
@@ -80,9 +103,14 @@ impl Manager {
         MY_CHANNEL.1.lock().unwrap().send(display).expect("");
     }
 
-    fn mode_record(&mut self, key: Keycode, new_mode: Mode, key_str: &str) -> (Mode, Option<String>) {
+    fn mode_record(
+        &mut self,
+        key: Keycode,
+        new_mode: Mode,
+        key_str: &str,
+    ) -> (Mode, Option<String>) {
         let m = self.recorded_macro.as_mut().unwrap();
-
+        println!("{}", key);
         if new_mode != Mode::Record {
             let new_macro = self.recorded_macro.take().unwrap();
             self.macros.insert(new_macro.clone().key, new_macro);
@@ -93,6 +121,10 @@ impl Manager {
                 self.recorded_macro.take();
                 return (Mode::None, Some(String::from("Canceled Recording")));
             }
+        } else if key == Keycode::F9 {
+            self.recorded_macro.take();
+            println!("{}", key);
+            return (Mode::None, Some(String::from("Canceled Recording")));
         } else {
             let (x, y) = DeviceState::new().get_mouse().coords;
             let new_action: Action = match (key, key_str.len() == 1) {
@@ -107,11 +139,19 @@ impl Manager {
                 (Keycode::F8, _) => Action::MUp(),
 
                 (_x, true) => Action::KeyC(key_str.chars().next().expect("string is empty")),
-                (_, _) => MAPPINGS.get(&key).unwrap_or(&Action::Sleep(10)).clone()
+                (_, _) => MAPPINGS.get(&key).unwrap_or(&Action::Sleep(10)).clone(),
             };
             m.actions.push(new_action.clone());
         }
-        return (new_mode, Some(format!("Key: {} Len: {} Last: {:?}", m.key, m.actions.len(), m.actions.last().unwrap_or(&Action::None()))));
+        return (
+            new_mode,
+            Some(format!(
+                "Key: {} Len: {} Last: {:?}",
+                m.key,
+                m.actions.len(),
+                m.actions.last().unwrap_or(&Action::None())
+            )),
+        );
     }
 
     fn mode_macro(&mut self, key_str: &str, mode: Mode) -> (Mode, Option<String>) {
@@ -124,10 +164,18 @@ impl Manager {
             return (new_mode, Some(format!("Running: {}", run_macro.name)));
         } else if key_str.len() == 1 {
             new_mode = Mode::Record;
-            self.recorded_macro = Some(Macro::new("PlaceHolderName".to_owned(), false, Vec::new(), key_str.to_owned()));
+            self.recorded_macro = Some(Macro::new(
+                "PlaceHolderName".to_owned(),
+                false,
+                Vec::new(),
+                key_str.to_owned(),
+            ));
             println!("Recording new Macro with key {}", key_str);
             self.last_pos = DeviceState::new().get_mouse().coords;
-            return (new_mode, Some(format!("Key: {} Len {} Last: None", key_str, 0)));
+            return (
+                new_mode,
+                Some(format!("Key: {} Len {} Last: None", key_str, 0)),
+            );
         };
         return (new_mode, None);
     }

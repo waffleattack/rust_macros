@@ -1,1 +1,513 @@
-{"C":{"actions":[{"Click":[]}],"name":"PlaceHolderName","repeat":false,"key":"C"},"I":{"actions":[{"MouseMove":[456,624]},{"Click":[]},{"MouseMove":[601,630]},{"Click":[]},{"MouseMove":[748,609]},{"Click":[]},{"MouseMove":[750,670]},{"Click":[]},{"MouseMove":[603,662]},{"Click":[]},{"MouseMove":[423,671]},{"Click":[]},{"MouseMove":[422,715]},{"Click":[]},{"MouseMove":[439,759]},{"Click":[]},{"MouseMove":[447,806]},{"Click":[]},{"MouseMove":[441,852]},{"Click":[]},{"MouseMove":[591,794]},{"Click":[]},{"MouseMove":[598,761]},{"Click":[]},{"MouseMove":[601,721]},{"Click":[]},{"MouseMove":[715,711]},{"Click":[]},{"MouseMove":[747,760]},{"Click":[]},{"MouseMove":[751,803]},{"Click":[]}],"name":"PlaceHolderName","repeat":false,"key":"I"},"U":{"actions":[{"KeyC":"T"},{"MouseMoveR":[-219,-168]}],"name":"PlaceHolderName","repeat":false,"key":"U"},"A":{"actions":[{"MDown":[]},{"MouseMoveR":[102,0]},{"MouseMoveR":[100,0]},{"MouseMoveR":[100,0]},{"MouseMoveR":[-50,-88]},{"MouseMoveR":[-100,0]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[50,88]},{"MouseMoveR":[100,0]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[100,0]},{"MouseMoveR":[-50,-88]},{"MouseMoveR":[-50,-88]},{"MouseMoveR":[-100,0]},{"MouseMoveR":[-100,0]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[50,88]},{"MouseMoveR":[50,88]},{"MouseMoveR":[100,0]},{"MouseMoveR":[100,0]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[-50,-88]},{"MouseMoveR":[-100,0]},{"MouseMoveR":[-50,-88]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[-50,-88]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[-100,0]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[50,88]},{"MouseMoveR":[-50,88]},{"MouseMoveR":[50,88]},{"MouseMoveR":[100,0]},{"MouseMoveR":[50,88]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[50,88]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[100,0]},{"MouseMoveR":[50,-88]},{"MouseMoveR":[-54,-88]},{"MUp":[]}],"name":"Create Artifact","repeat":false,"key":"A"}}
+{
+  "P": {
+    "actions": [
+      {
+        "MouseMove": [
+          722,
+          922
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          677,
+          479
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          685,
+          604
+        ]
+      },
+      {
+        "Click": []
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "P"
+  },
+  "C": {
+    "actions": [
+      {
+        "Click": []
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "C"
+  },
+  "L": {
+    "actions": [],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "L"
+  },
+  "E": {
+    "actions": [
+      {
+        "MouseMove": [
+          613,
+          350
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          719,
+          841
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "Click": []
+      },
+      {
+        "Click": []
+      },
+      {
+        "Click": []
+      }
+    ],
+    "name": "BuyAll",
+    "repeat": true,
+    "key": "E"
+  },
+  "M": {
+    "actions": [
+      {
+        "MDown": []
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "M"
+  },
+
+  "A": {
+    "actions": [
+      {
+        "MDown": []
+      },
+      {
+        "MouseMoveR": [
+          102,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          100,
+          0
+        ]
+      },
+      {
+        "MouseMoveR": [
+          50,
+          -88
+        ]
+      },
+      {
+        "MouseMoveR": [
+          -54,
+          -88
+        ]
+      },
+      {
+        "MUp": []
+      }
+    ],
+    "name": "Create Artifact",
+    "repeat": false,
+    "key": "A"
+  },
+  "I": {
+    "actions": [
+      {
+        "MouseMove": [
+          456,
+          624
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          601,
+          630
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          748,
+          609
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          750,
+          670
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          603,
+          662
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          423,
+          671
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          422,
+          715
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          439,
+          759
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          447,
+          806
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          441,
+          852
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          591,
+          794
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          598,
+          761
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          601,
+          721
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          715,
+          711
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          747,
+          760
+        ]
+      },
+      {
+        "Click": []
+      },
+      {
+        "MouseMove": [
+          751,
+          803
+        ]
+      },
+      {
+        "Click": []
+      }
+    ],
+    "name": "PlaceHolderName",
+    "repeat": false,
+    "key": "I"
+  }
+}
